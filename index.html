@@ -54,7 +54,8 @@
             { name: "George", characteristics: ["Selfish", "Spineless" ]}, 
             { name: "Kramer", characteristics: ["Selfish", "Charismatic", "Idol"] }, 
             { name: "Elaine", characteristics: ["Selfish", "Idol"] }, 
-            { name: "Jerry" , characteristics: ["Selfish" ]}
+            { name: "Jerry" , characteristics: ["Phoney", "crazy", "Selfish" ]},
+            { name: "Soup Nazi", characteristics: ["Angry"]}
           ],
           favoriteList: [],
         }),
@@ -65,18 +66,28 @@
         //it is about managing / triggering actions
         computed: {
           characteristicStatistics() {
-            const  characters = this.characterList.reduce((acc, character) => {
+            const  allCharacteristics = this.characterList.reduce((acc, character) => {
               return [...new Set(acc.concat(character.characteristics))];
             }, []);
             
-            const statistics = {
-              Selfish: 0,
-              Charismatic: 0,
-              Idol: 0,
-              Spineless: 0,
-            }
+            const statistics = allCharacteristics.reduce((acc, characteristic) => {
+              acc[characteristic] = 0;
+              return acc;
+            }, {});
+
+            /* let statistics = {};
+
+            allCharacteristics.forEach(characteristic => {
+              statistics[characteristic] = 0;
+            });
+            
+            const statistics = Object.fromEntries(
+              allCharacteristics.map(characteristic => [characteristic, 0])
+            );
+             */
+
             this.characterList.forEach(character => {
-              characters.forEach(characterType => {
+              allCharacteristics.forEach(characterType => {
                 if(character.characteristics.includes(characterType)){
                   statistics[characterType]++;  
               }
